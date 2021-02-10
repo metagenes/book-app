@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,9 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        $this->call([
-        	SiteSeeder::class
-        ]);
+        $this->call(AuthorsSeed::class);
+        $this->call(BooksSeed::class);
+        $this->call(SiteSeeder::class);
     }
 }
