@@ -13,10 +13,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes([
+	'verivy' => false,
+	'reset' => false
+]);
+
+Route::middleware('auth')->group(function ()
+{
+	
+	Route::get('/', 'HomeController@index')->name('home');
+
+	Route::post('/book/get', 'BookController@get')->name('book.get');
+	Route::post('/member/get', 'MemberController@get')->name('member.get');
+
+	Route::prefix('/author')->name('author.')->group(function ()
+	{
+		Route::get('/add', 'AuthorController@add')->name('add');
+		Route::get('/remove', 'AuthorController@remove')->name('remove');
+
+		Route::post('/create', 'AuthorController@create')->name('create');
+		Route::delete('/destroy/{stock}', 'AuthorController@destroy')->name('destroy');
+	});
+
+	Route::resource('/book', 'BookController')->except(['show', 'edit']);
+	Route::resource('/member', 'MemberController')->except(['edit']);
+
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
